@@ -1,0 +1,20 @@
+{
+  "name": "panco/multi-db",
+  "description": "Multi database connect library.",
+  "type": "library",
+  "authors": [
+    {
+      "name": "Panco",
+      "email": "1129443982@qq.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.6.0",
+    "ext-pdo": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "panco\\": "src/"
+    }
+  }
+}
