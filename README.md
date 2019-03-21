@@ -4,7 +4,9 @@
 
 **专注多个连接的数据库类库。**
 
-`How to use：`
+How to use？look!
+
+`composer require panco/multi-db`
 
 ```
 // use mutil connect

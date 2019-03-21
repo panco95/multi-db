@@ -1,16 +1,19 @@
 {
   "name": "panco/multi-db",
   "description": "Multi database connect library.",
-  "type": "library",
+  "keywords": [
+    "orm",
+    "database"
+  ],
+  "license": "Apache-2.0",
   "authors": [
     {
-      "name": "Panco",
+      "name": "panco",
       "email": "1129443982@qq.com"
     }
   ],
   "require": {
-    "php": ">=5.6.0",
-    "ext-pdo": "*"
+    "php": ">=5.6.0"
   },
   "autoload": {
     "psr-4": {
