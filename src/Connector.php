@@ -2,7 +2,7 @@
 
 namespace panco;
 
-class Connect
+class Connector
 {
 
     public $connect = null;

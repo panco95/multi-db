@@ -1,6 +1,8 @@
 <?php
 require_once './vendor/autoload.php';
 
+use panco\facade\Db;
+
 // multi config
 $config1 = [
     // database1
@@ -38,20 +40,29 @@ $config2 = [
 
 // Use multi database connect
 // 使用多个数据库连接
-\panco\facade\Db::setConfig($config1);
-$users = \panco\facade\Db::query('delete from `user` where id > 0 or id = 0', 'test1'); // no param
-$users = \panco\facade\Db::query('delete from `user` where id > ? or id = ?', 'test1', [0, 0]); // with params
-
-$users = \panco\facade\Db::query('delete from `user` where id > ? or id = ?', $params = [0, 0]); // default first config's database, is test1
-$users = \panco\facade\Db::query('delete from `user` where id > ? or id = ?', 'test2', $params = [0, 0]); // use config's database2. is test2
-\panco\facade\Db::toggleConnect('test2'); // toggle default connect to test2
-$users = \panco\facade\Db::query('delete from `user` where id > ? or id = ?', $params = [0, 0]); // now connect is test2
-$books = \panco\facade\Db::query('select * from `bag` where username = ? and age = ?', 'test1', ['panco', 24]); // change database once and with params
-$books = \panco\facade\Db::query('select * from `bag` where username = ? and age = ?', $params = ['panco', 24]); // use default database and with params
+Db::setConfig($config1);
+// no param and use test1 connect once
+$users = Db::query('select * from `user` where id > 0 or id = 0', [], 'test1');
+// with params and use test1 connect once
+$users = Db::query('select * from `user` where id > ? or id = ?', [0, 0], 'test1');
+// default connect test1 and with params
+$users = Db::query('select * from `user` where id > ? or id = ?', [0, 0]);
+// with params and use test2 connect once
+$users = Db::query('select * from `user` where id > ? or id = ?', [0, 0], 'test2');
+// toggle default connect to test2
+Db::toggleConnect('test2');
+// now connect is test2 with params
+$users = Db::query('select * from `user` where id > ? or id = ?', [0, 0]);
+// use connect test1 once and with params
+$books = Db::query('select * from `bag` where username = ? and age = ?', ['panco', 24], 'test1');
+// use default connect test2 and with params
+$books = Db::query('select * from `bag` where username = ? and age = ?', ['panco', 24]);
 
 // Use single database connect
 // 使用单个数据库连接
-\panco\facade\Db::setConfig($config2);
-$users = \panco\facade\Db::query('delete from `user` where id > 0'); // no param
-$books = \panco\facade\Db::query('select * from `bag` where username = ? and age = ?', $params = ['panco', 24]); // have params
+Db::setConfig($config2);
+// no param
+$users = Db::query('select * from `user` where id > 0');
+// with params
+$books = Db::query('select * from `bag` where username = ? and age = ?', ['panco', 24]);
 
