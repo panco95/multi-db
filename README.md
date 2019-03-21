@@ -52,5 +52,5 @@ $config2 = [
 ];
 
 \panco\facade\Db::setConfig($config2);
-\panco\facade\Db::query('delete from `user` where id > 0', 'user');
+\panco\facade\Db::query('delete from `user` where id > 0');
 ```
