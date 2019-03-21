@@ -49,7 +49,7 @@ class Db
     }
 
     // 执行sql
-    public function query($sql, $dbCode = null, $params = array())
+    public function query($sql, $params = array(), $dbCode = null)
     {
         if (is_null($dbCode)) {
             $dbCode = $this->defaultConnect;
