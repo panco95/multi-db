@@ -33,6 +33,7 @@ $config = [
 
 \panco\facade\Db::setConfig($config);
 \panco\facade\Db::query('delete from `user` where id > 0', 'user');
+\panco\facade\Db::query('select * from `bag` where id > 0', 'book');
 ```
 
 ```
