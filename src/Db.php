@@ -2,12 +2,30 @@
 
 namespace panco;
 
+/**
+ * 实际Db类（通常使用Db方法只需要调用Db外观类静态方法，无需创建本类并使用，请直接使用facade/Db）
+ * Class Db
+ * @package panco
+ */
 class Db
 {
 
+    /**
+     * 存储单个或多个数据库连接
+     * @var array
+     */
     public $connect = array();
+
+    /**
+     * 默认数据库配置数组的key
+     * @var null
+     */
     public $defaultConnect = null;
 
+    /**
+     * 配置数据库并连接
+     * @param $dbs @数据库配置，可一维数组（单连接）或者二维数组（多连接）
+     */
     public function setConfig($dbs)
     {
         if (count($dbs) < 1) {
@@ -30,6 +48,10 @@ class Db
         }
     }
 
+    /**
+     * 检查数据库连接是否可用
+     * @param null $connect @连接key
+     */
     public function checkConnect($connect = null)
     {
         if (is_null($connect)) $connect = $this->defaultConnect;
@@ -38,6 +60,10 @@ class Db
         }
     }
 
+    /**
+     * 切换默认数据库
+     * @param $connect @连接key
+     */
     public function toggleConnect($connect)
     {
         if (isset($this->connect[$connect]) && $this->connect[$connect] instanceof \PDO) {
@@ -45,6 +71,14 @@ class Db
         }
     }
 
+    /**
+     * 执行数据库SQL语句
+     * Select语句返回数组，Update、Delete、Insert返回bool
+     * @param $sql @SQL语句
+     * @param array $params @预编译参数数组，SQL语句中以 ? 符号替代参数，按此参数顺序预编译 ？
+     * @param null $connect @多连接连接key，单个连接给此参数
+     * @return array
+     */
     public function query($sql, $params = array(), $connect = null)
     {
         if (is_null($connect)) {
