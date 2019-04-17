@@ -2,15 +2,21 @@
 
 **Multi database connect library, support connect pool. **
 
-**专注多个连接的数据库类库，支持连接池。**
+**专注多个连接的数据库类库，支持连接池，优势：**
 
-How to use？look!
 
-`composer require panco/multi-db`
+`1、支持多连接操作或者多数据库操作 / Support multi connect or database`
+
+`2、支持连接池（每个连接都独立支持） / Support connect pool`
+
+`3、防SQL注入 / Prevent SQL injection`
+
+ 安装 / install:  `composer require panco/multi-db`
 
 method:
 ```
 use panco\facade\Db;
+
 
 // 配置连接池数量，不设置默认为1，连接池就单个连接
 // set connect pool, evert connect also have pool!
@@ -32,14 +38,9 @@ Db::query($sql, ['param1', 'param2'], 'test1');
 
 
 Example:
+
 ```
 use panco\facade\Db;
-
-// set connector pool 
-// 配置连接池数量，不管是多连接还是单连接，每个连接都是连接池
-// 如果不需要连接池就不需要执行
-Db::setPool(50);
-
 
 // 多连接配置演示
 // multi config
@@ -53,6 +54,7 @@ $config1 = [
         'password' => '0825',
         'database' => 'test1',
         'charset' => 'utf8',
+        'pool' => 10
     ],
     // database2
     'test2' => [
@@ -63,6 +65,7 @@ $config1 = [
         'password' => '0825',
         'database' => 'test2',
         'charset' => 'utf8',
+        'pool' => 20
     ]
 ];
 
@@ -76,6 +79,7 @@ $config2 = [
     'password' => '0825',
     'database' => 'test1',
     'charset' => 'utf8',
+    'pool' => 50
 ];
 
 
@@ -98,6 +102,7 @@ $users = Db::query('select * from `user` where id > ? or id = ?', [0, 0]);
 $books = Db::query('select * from `bag` where username = ? and age = ?', ['panco', 24], 'test1');
 // use default connect test2 and with params
 $books = Db::query('select * from `bag` where username = ? and age = ?', ['panco', 24]);
+
 
 // Use single database connect
 // 使用单个数据库连接
