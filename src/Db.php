@@ -17,6 +17,11 @@ class Db
     public $connect = array();
 
     /**
+     * 连接池数量
+     */
+    public $poolNumber = 1;
+
+    /**
      * 默认数据库配置数组的key
      * @var null
      */
@@ -32,14 +37,19 @@ class Db
             die('At least one database config!');
         }
         if (isset($dbs['type']) && isset($dbs['host'])) {
-            $connector = new Connector($dbs['host'], $dbs['port'], $dbs['user'], $dbs['password'], $dbs['type'], $dbs['database'], $dbs['charset']);
-            $this->connect[0] = $connector->connect;
-            $this->defaultConnect = 0;
+            // 根据连接池数量创建连接
+            for ($p = 0; $p < $this->poolNumber; $p++) {
+                $connector = new Connector($dbs['host'], $dbs['port'], $dbs['user'], $dbs['password'], $dbs['type'], $dbs['database'], $dbs['charset']);
+                $this->connect[0][$p] = $connector->connect;
+                $this->defaultConnect = 0;
+            }
         } else {
             $i = 0;
             foreach ($dbs as $connect => $db) {
-                $connector = new Connector($db['host'], $db['port'], $db['user'], $db['password'], $db['type'], $db['database'], $db['charset']);
-                $this->connect[$connect] = $connector->connect;
+                for ($p = 0; $p < $this->poolNumber; $p++) {
+                    $connector = new Connector($db['host'], $db['port'], $db['user'], $db['password'], $db['type'], $db['database'], $db['charset']);
+                    $this->connect[$connect][$p] = $connector->connect;
+                }
                 if ($i == 0) {
                     $this->defaultConnect = $connect;
                 }
@@ -49,16 +59,14 @@ class Db
     }
 
     /**
-     * 检查数据库连接是否可用
-     * @param null $connect @连接key
+     * 配置连接池数量
+     * @param $number
      */
-    public function checkConnect($connect = null)
+    public function setPool($number)
     {
-        if (is_null($connect)) $connect = $this->defaultConnect;
-        if (!$this->connect[$connect] instanceof \PDO) {
-            die("Error: No database connect.");
-        }
+        $this->poolNumber = (int)$number;
     }
+
 
     /**
      * 切换默认数据库
@@ -66,7 +74,7 @@ class Db
      */
     public function toggleConnect($connect)
     {
-        if (isset($this->connect[$connect]) && $this->connect[$connect] instanceof \PDO) {
+        if (isset($this->connect[$connect])) {
             $this->defaultConnect = $connect;
         }
     }
@@ -85,7 +93,9 @@ class Db
             $connect = $this->defaultConnect;
         }
 
-        $stmt = $this->connect[$connect]->prepare($sql);
+        $pool = mt_rand(0, $this->poolNumber - 1);  // 随机选取连接
+
+        $stmt = $this->connect[$connect][$pool]->prepare($sql);
         if (is_array($params) && count($params) > 0) {
             foreach ($params as $k => &$param) {
                 $param = addslashes($param);

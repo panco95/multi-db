@@ -6,9 +6,9 @@ namespace panco\facade;
  * Db单例外观类
  * @see \panco\Db
  * @mixin \panco\Db
- * @method mixed checkConnect(string $connect = '') static 检查连接是否可用
  * @method mixed toggleConnect(string $connect = '') static 切换默认连接
  * @method mixed query(string $sql = '', mixed $params = array(), string $connect = '') static 执行SQL语句
+ * @method mixed setPool(int $number = 1) static 配置连接池数量
  */
 class Db
 {

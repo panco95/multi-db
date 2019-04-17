@@ -38,6 +38,12 @@ $config2 = [
     'charset' => 'utf8',
 ];
 
+// set connector pool
+// 配置连接池数量，不管是多连接还是单连接，每个连接都是连接池
+// 如果不需要连接池就不需要执行
+Db::setPool(50);
+
+
 // Use multi database connect
 // 使用多个数据库连接
 Db::setConfig($config1);
