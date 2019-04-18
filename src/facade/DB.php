@@ -4,13 +4,13 @@ namespace panco\facade;
 
 /**
  * Db单例外观类
- * @see \panco\Db
- * @mixin \panco\Db
+ * @see \panco\DB
+ * @mixin \panco\DB
  * @method mixed toggleConnect(string $connect = '') static 切换默认连接
  * @method mixed query(string $sql = '', mixed $params = array(), string $connect = '') static 执行SQL语句
- * @method mixed setPool(int $number = 1) static 配置连接池数量
+ * @method mixed ping static ping所有连接，防止连接断开
  */
-class Db
+class DB
 {
 
     /**
@@ -54,8 +54,8 @@ class Db
      */
     private static function checkDbInstance()
     {
-        if (!self::$db instanceof \panco\Db) {
-            self::$db = new \panco\Db();
+        if (!self::$db instanceof \panco\DB) {
+            self::$db = new \panco\DB();
         }
     }
 
