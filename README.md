@@ -20,16 +20,15 @@
 use panco\facade\Db;
 
 // 配置数据库连接数组，同时支持单连接和多连接
-// config is array, see example.
 Db::setConfig($config);
 
-// 切换多连接的默认连接key
-// toggle default connect, param is $config's key(string).
+// ping数据库，在使用workerman和swoole需要定时ping防止数据库连接断开
+Db::ping();
+
+// 切换多连接的默认连接
 Db::toggleConnect('test1');
 
-// 执行sql
-// param1 is sql, param you can write ?, and param2 is ? to variable, param3 is connect $config's key(string).
-// select sql return array, insert,delete and update sql return bool.
+// 执行sql，参数1：sql语句，参数2：sql的？代替的参数数组，参数3：连接名称
 Db::query($sql, ['param1', 'param2'], 'test1');
 ```
 
