@@ -89,10 +89,11 @@ class DB
      * 切换默认数据库
      * @param $connect @连接key
      */
-    public function toggleConnect($connect)
+    public function connect($connect)
     {
         if (isset($this->connect[$connect])) {
             $this->defaultConnect = $connect;
+            return $this;
         }
     }
 
@@ -101,14 +102,11 @@ class DB
      * Select语句返回数组，Update、Delete、Insert返回bool
      * @param $sql @SQL语句
      * @param array $params @预编译参数数组，SQL语句中以 ? 符号替代参数，按此参数顺序预编译 ？
-     * @param null $connect @多连接连接key，单个连接给此参数
      * @return array
      */
-    public function query($sql, $params = array(), $connect = null)
+    public function query($sql, $params = array())
     {
-        if (is_null($connect)) {
-            $connect = $this->defaultConnect;
-        }
+        $connect = $this->defaultConnect;
 
         if (isset($this->config[$connect]['pool'])) {
             $pool = $this->config[$connect]['pool'];

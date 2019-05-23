@@ -6,7 +6,7 @@ namespace panco\facade;
  * Db单例外观类
  * @see \panco\DB
  * @mixin \panco\DB
- * @method mixed toggleConnect(string $connect = '') static 切换默认连接
+ * @method mixed connect(string $connect = '') static 切换默认连接
  * @method mixed query(string $sql = '', mixed $params = array(), string $connect = '') static 执行SQL语句
  * @method mixed ping static ping所有连接，防止连接断开
  */
